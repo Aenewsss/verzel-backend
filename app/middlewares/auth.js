@@ -4,7 +4,9 @@ const User = require('../models/User')
 const secret = process.env.JWT_TOKEN
 
 function withAuth(req, res, next) {
-    const token = req.headers['x-access-token'];
+    const headerToken = req.headers['x-access-token'];
+    
+    const token = headerToken ? headerToken.replaceAll('"', '') : null;
 
     if (!token) {
         return res.status(401).json({ error: 'No token provided' });

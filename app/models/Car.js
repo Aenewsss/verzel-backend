@@ -16,5 +16,9 @@ module.exports = mongoose.model('Car', mongoose.Schema({
     image: {
         type: String,
         required: [true, "Por favor, insira uma imagem"]
+    },
+    price: {
+        type: Number,
+        required: [true, "Por favor, insira um valor"]
     }
 }))

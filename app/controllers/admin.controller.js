@@ -22,15 +22,6 @@ class AdminController {
         }
     }
 
-    async createUser(req, res) {
-        const { username, password } = req.body;
-
-        const user = new Users({ username, password })
-        user.save()
-
-        res.send({user})
-    }
-
     listAll(req, res) {
         Cars.find((err, cars) => {
             res.status(200).send({ cars });
@@ -50,12 +41,12 @@ class AdminController {
     }
 
     newCar(req, res) {
-        const { name, brand, model, image } = req.body;
+        const { name, brand, model, image, price } = req.body;
 
         try {
-            Cars.findOne({ name, brand, model, image }, async (err, product) => {
+            Cars.findOne({ name, brand, model, image, price }, async (err, product) => {
                 if (product) return res.status(200).send({ message: 'Carro já adicionado' });
-                let newCar = new Cars({ name, brand, model, image });
+                let newCar = new Cars({ name, brand, model, image, price });
 
                 await newCar.save();
 
@@ -81,13 +72,15 @@ class AdminController {
     }
 
     async updateCar(req, res) {
-        const { car } = req.body;
+        const { name, brand, model, image, price } = req.body;
         const { id } = req.params;
+
+        console.log(id, req.body)
 
         try {
             let newCar = await Cars.findByIdAndUpdate(
                 id,
-                car
+                { name, brand, model, image, price }
             );
 
             await newCar.save();
